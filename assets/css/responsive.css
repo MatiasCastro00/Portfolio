@@ -16,7 +16,7 @@
 	}
 
 	.hero img {
-		height: 500px;
+		max-height: 500px;
 	}
 
 	/* SITEMAIN
@@ -57,7 +57,7 @@
 	/* HERO
 	================================================== */
 	.hero h1 {
-		font-size: 38px
+		font-size: 38px;
 	}
 
 	.job-title {
@@ -65,7 +65,7 @@
 	}
 
 	.hero img {
-		height: 420px;
+		max-height: 420px;
 	}
 
 	/* SITEMAIN
@@ -82,7 +82,7 @@
 
 	.site-section h2,
 	.site-section h3 {
-		font-size: 32px
+		font-size: 32px;
 	}
 
 	/* Section: Skills */
@@ -106,15 +106,6 @@
 	
 	.service h4 {
 		font-size: 22px; 
-	}
-
-	/* Section: Portfolio */
-	.section-portfolio .col-md-4:nth-last-child(-n+3) .portfolio-item {
-	    margin-bottom: 30px;
-	}
-
-	.section-portfolio .col-md-4:nth-last-child(-n+2) .portfolio-item {
-	    margin-bottom: 0;
 	}
 
 	/* Section: Counters */
@@ -293,12 +284,29 @@
 
 	/* HERO
 	================================================== */
+	.hero {
+		height: auto;
+		min-height: 760px;
+		overflow: hidden;
+	}
+
+	.hero .container {
+		height: 760px;
+	}
+
 	.hero .col-md-6:first-child {
-		top: 30%;
+		top: 150px;
+		left: 15px;
+		right: 15px;
+		transform: none;
+		-webkit-transform: none;
+		-ms-transform: none;
+		-moz-transform: none;
+		-o-transform: none;
 	}
 
 	.hero h1 {
-		font-size: 32px
+		font-size: 32px;
 		margin-bottom: 10px;
 	}
 
@@ -308,7 +316,14 @@
 	}
 
 	.hero img {
-		height: 360px
+		width: 88%;
+		max-height: none;
+	}
+
+	.hero .col-md-6:last-child {
+		left: 0;
+		right: 0;
+		text-align: center;
 	}
 
 	/* SITEMAIN
@@ -347,6 +362,16 @@
 	    margin-bottom: 10px;
 	}
 
+	.skill-grid {
+		gap: 10px;
+	}
+
+	.skill-grid span {
+		min-height: 40px;
+		padding: 0 14px;
+		font-size: 13px;
+	}
+
 	/* Section: Services */
 	.section-services {
 		padding-top: 180px;
@@ -365,13 +390,8 @@
 		padding-left: 7.5px;
 	}
 
-	.portfolio-item,
-	.section-portfolio .col-md-4:nth-last-child(-n+3) .portfolio-item {
+	.portfolio-item {
 		margin-bottom: 15px; 
-	}
-
-	.section-portfolio .col-md-4:nth-last-child(-n+2) .portfolio-item {
-		margin-bottom: 0px;
 	}
 
 	.section-services .container {
@@ -409,6 +429,14 @@
 
 	/* HERO
 	================================================== */
+	.hero {
+		min-height: 720px;
+	}
+
+	.hero .container {
+		height: 720px;
+	}
+
 	.hero .visible-xxs + .btn {
 		margin-top: 10px;
 	}
@@ -433,9 +461,8 @@
 		padding-left: 0px;
 	}
 
-	.portfolio-item,
-	.section-portfolio .col-md-4:nth-last-child(-n+3) .portfolio-item {
-		margin-bottom: 0px; 
+	.portfolio-item {
+		margin-bottom: 18px; 
 	}
 
 	.section-portfolio .btn {

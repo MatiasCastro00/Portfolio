@@ -69,10 +69,43 @@ $(function() {
 
 	$('#infinity').each(count);
 
-	function count(options) {
+    function count(options) {
         var $this = $(this);
         options = $.extend({}, options || {}, $this.data('countToOptions') || {});
         $this.countTo(options);
+    }
+
+    // Contact form
+    var $contactForm = $('#contact-form');
+    var $contactStatus = $('#contact-status');
+
+    if ($contactForm.length) {
+        $contactForm.on('submit', function(event) {
+            event.preventDefault();
+
+            var form = this;
+            var $submit = $contactForm.find('button[type="submit"]');
+
+            $contactStatus.removeClass('is-error').text('Sending...');
+            $submit.prop('disabled', true);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Form submission failed');
+                }
+
+                window.location.href = 'thanks.html';
+            }).catch(function() {
+                $contactStatus.addClass('is-error').text('Something went wrong. Please email me directly at matiasnicolascastro00@gmail.com.');
+                $submit.prop('disabled', false);
+            });
+        });
     }
 
     // Navigation overlay
