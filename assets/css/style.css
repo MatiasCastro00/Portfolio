@@ -697,13 +697,14 @@ body {
 
 .recommendation-stage {
     position: relative;
-    height: 360px;
-    overflow: hidden;
+    min-height: 430px;
+    overflow: visible;
+    transition: height 0.3s ease;
 }
 
 .recommendation-item {
     width: 46%;
-    min-height: 300px;
+    min-height: 360px;
     padding: 28px;
     border: 1px solid #e1e1e1;
     background-color: #fff;
@@ -741,8 +742,33 @@ body {
 }
 
 .recommendation-item p {
-    margin-bottom: 24px;
-    line-height: 1.7;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.recommendation-language {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.recommendation-language button {
+    min-height: 28px;
+    padding: 0 10px;
+    border: 1px solid #212121;
+    background-color: #fff;
+    color: #212121;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.recommendation-language button.is-active,
+.recommendation-language button:hover,
+.recommendation-language button:focus {
+    background-color: #212121;
+    color: #fff;
 }
 
 .recommendation-item h4 {
@@ -753,7 +779,7 @@ body {
 
 .recommendation-item > span {
     display: block;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     color: #777;
     font-size: 13px;
     font-weight: 700;

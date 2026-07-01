@@ -106,6 +106,10 @@
 		width: 58%;
 	}
 
+	.recommendation-stage {
+		min-height: 450px;
+	}
+
 	/* Section: Services */
 	.section-services{
 		padding-top: 200px;
@@ -408,7 +412,7 @@
 	}
 
 	.recommendation-stage {
-		height: 340px;
+		min-height: 440px;
 	}
 
 	.recommendation-item {
