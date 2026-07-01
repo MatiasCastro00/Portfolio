@@ -75,18 +75,87 @@ $(function() {
         $this.countTo(options);
     }
 
-    // Contact form
-    var $contactForm = $('#contact-form');
-    var $contactStatus = $('#contact-status');
+    // Recommendation skills
+    var recommendationSkills = {
+        'NostalgicBrains': ['Unity', 'Mobile', 'Firebase Analytics', 'Tenjin', 'Backend API', 'Optimization'],
+        'Freelance Game Developer': ['Unity', 'Gameplay', 'UI', 'Systems', 'Client Work'],
+        'Pilgrims Games Studio': ['Unity', 'Mobile Porting', 'WebGL', 'Google Play', 'Nintendo Switch', 'Optimization'],
+        'Compromiso Digital': ['Unreal Engine 4', 'Blueprints', 'Gameplay'],
+        'Tharax': ['Unity', 'WebGL', 'Multiplayer', 'Gameplay'],
+        'Other / Not listed': []
+    };
 
-    if ($contactForm.length) {
-        $contactForm.on('submit', function(event) {
+    var $recommendationForm = $('#recommendation-form');
+    var $companySelect = $recommendationForm.find('.recommendation-company-select');
+    var $skillOptions = $recommendationForm.find('.recommendation-skill-options');
+    var $skillPlaceholder = $recommendationForm.find('.recommendation-skills-placeholder');
+
+    function renderRecommendationSkills(company) {
+        var skills = recommendationSkills[company] || [];
+
+        $skillOptions.empty();
+
+        if (!company) {
+            $skillPlaceholder.text('Choose a company to validate related skills.').show();
+            return;
+        }
+
+        if (!skills.length) {
+            $skillPlaceholder.text('Add the skills you can validate in the field below.').show();
+            return;
+        }
+
+        $skillPlaceholder.hide();
+
+        skills.forEach(function(skill) {
+            var skillId = 'skill-' + skill.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            var $label = $('<label/>', {
+                'class': 'recommendation-skill-option',
+                'for': skillId
+            });
+            var $input = $('<input/>', {
+                type: 'checkbox',
+                id: skillId,
+                name: 'validated_skills',
+                value: skill
+            });
+
+            $label.append($input).append($('<span/>', {
+                text: skill
+            }));
+            $skillOptions.append($label);
+        });
+    }
+
+    $companySelect.on('change', function() {
+        renderRecommendationSkills($(this).val());
+    });
+
+    renderRecommendationSkills($companySelect.val());
+
+    // FormSubmit forms
+    $('.js-formsubmit-form').each(function() {
+        var $form = $(this);
+        var $status = $form.find('.contact-status');
+
+        $form.on('submit', function(event) {
             event.preventDefault();
 
             var form = this;
-            var $submit = $contactForm.find('button[type="submit"]');
+            var $submit = $form.find('button[type="submit"]');
+            var successUrl = $form.data('success-url') || 'thanks.html';
 
-            $contactStatus.removeClass('is-error').text('Sending...');
+            if ($form.is('#recommendation-form')) {
+                var hasCheckedSkill = $form.find('input[name="validated_skills"]:checked').length > 0;
+                var hasAdditionalSkill = $.trim($form.find('input[name="additional_skills"]').val()).length > 0;
+
+                if (!hasCheckedSkill && !hasAdditionalSkill) {
+                    $status.addClass('is-error').text('Please validate at least one skill or add one manually.');
+                    return;
+                }
+            }
+
+            $status.removeClass('is-error').text('Sending...');
             $submit.prop('disabled', true);
 
             fetch(form.action, {
@@ -100,13 +169,13 @@ $(function() {
                     throw new Error('Form submission failed');
                 }
 
-                window.location.href = 'thanks.html';
+                window.location.href = successUrl;
             }).catch(function() {
-                $contactStatus.addClass('is-error').text('Something went wrong. Please email me directly at matiasnicolascastro00@gmail.com.');
+                $status.addClass('is-error').text('Something went wrong. Please email me directly at matiasnicolascastro00@gmail.com.');
                 $submit.prop('disabled', false);
             });
         });
-    }
+    });
 
     // Navigation overlay
     var s = skrollr.init({
