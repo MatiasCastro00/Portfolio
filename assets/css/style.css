@@ -878,6 +878,16 @@ body {
     color: #b00020;
 }
 
+.recommendation-modal .modal-header {
+    height: 0;
+    min-height: 0;
+    border: 0;
+}
+
+.recommendation-modal .modal-header .close {
+    z-index: 2;
+}
+
 .recommendation-modal .modal-body {
     padding: 36px;
 }
