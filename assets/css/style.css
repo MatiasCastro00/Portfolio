@@ -1104,3 +1104,17 @@ a.icon-up-bg:hover {
     font-size: 18px;
     line-height: 1.7;
 }
+
+.reference-decoder {
+    width: 100%;
+    max-width: 760px;
+}
+
+.reference-decoder textarea.form-control {
+    min-height: 140px;
+    margin-bottom: 18px;
+}
+
+.reference-decoder .btn {
+    margin-bottom: 18px;
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Reference Decoder | Matias Castro</title>
+
+    <meta name="description" content="Decode portfolio reference submissions.">
+    <meta name="author" content="Matias Castro">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet">
+</head>
+<body class="thanks-page">
+    <main class="thanks-view">
+        <section class="thanks-panel text-center reference-decoder">
+            <a href="index.html#hero" class="site-logo"><img src="assets/img/logo.png" alt="Matias Castro"></a>
+            <h1>Reference Decoder</h1>
+            <img src="assets/img/lines.svg" class="img-lines" alt="">
+            <p>Paste the reference encoded parts from the email in order, then decode.</p>
+
+            <textarea id="encoded-reference" class="form-control" placeholder="Paste reference_encoded_part_1, reference_encoded_part_2..."></textarea>
+            <button id="decode-reference" type="button" class="btn btn-fill">Decode</button>
+            <textarea id="decoded-reference" class="form-control" placeholder="Decoded reference" readonly></textarea>
+            <p id="decode-status" class="contact-status" aria-live="polite"></p>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            var encodedReference = document.getElementById('encoded-reference');
+            var decodedReference = document.getElementById('decoded-reference');
+            var decodeButton = document.getElementById('decode-reference');
+            var status = document.getElementById('decode-status');
+
+            function decodeHex(value) {
+                var cleanValue = value.replace(/[^0-9a-f]/gi, '');
+                var decoded = '';
+                var index;
+
+                if (cleanValue.length % 2 !== 0) {
+                    throw new Error('Invalid encoded text length.');
+                }
+
+                for (index = 0; index < cleanValue.length; index += 2) {
+                    decoded += String.fromCharCode(parseInt(cleanValue.substr(index, 2), 16));
+                }
+
+                return decoded;
+            }
+
+            decodeButton.addEventListener('click', function () {
+                try {
+                    decodedReference.value = decodeHex(encodedReference.value);
+                    status.classList.remove('is-error');
+                    status.textContent = 'Decoded.';
+                } catch (error) {
+                    decodedReference.value = '';
+                    status.classList.add('is-error');
+                    status.textContent = 'Could not decode that text.';
+                }
+            });
+        }());
+    </script>
+</body>
+</html>
