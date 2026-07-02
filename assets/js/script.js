@@ -133,17 +133,30 @@ $(function() {
 
     renderRecommendationSkills($companySelect.val());
 
-    function buildFormSubmitData(form, normalizeSeparators) {
+    function normalizeRecommendationValue(value) {
+        var withoutAccents = value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+
+        return withoutAccents.replace(/\s*\|\s*/g, ' / ');
+    }
+
+    function buildFormSubmitData(form, normalizeRecommendationText) {
         var sourceData = new FormData(form);
         var submitData = new FormData();
         var normalizedSeparators = false;
+        var normalizedAccents = false;
 
         sourceData.forEach(function(value, key) {
-            if (normalizeSeparators && typeof value === 'string') {
-                var normalizedValue = value.replace(/\s*\|\s*/g, ' / ');
+            if (normalizeRecommendationText && typeof value === 'string') {
+                var withoutAccents = value
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '');
+                var normalizedValue = normalizeRecommendationValue(value);
 
                 if (normalizedValue !== value) {
-                    normalizedSeparators = true;
+                    normalizedSeparators = normalizedSeparators || value.indexOf('|') !== -1;
+                    normalizedAccents = normalizedAccents || withoutAccents.normalize('NFC') !== value.normalize('NFC');
                 }
 
                 submitData.append(key, normalizedValue);
@@ -155,6 +168,10 @@ $(function() {
 
         if (normalizedSeparators) {
             submitData.append('delivery_note', 'Vertical bar separators were converted to slashes for reliable email delivery.');
+        }
+
+        if (normalizedAccents) {
+            submitData.append('encoding_note', 'Accents were removed from this recommendation before delivery to avoid FormSubmit filtering.');
         }
 
         return submitData;
