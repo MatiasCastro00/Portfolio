@@ -133,6 +133,33 @@ $(function() {
 
     renderRecommendationSkills($companySelect.val());
 
+    function buildFormSubmitData(form, normalizeSeparators) {
+        var sourceData = new FormData(form);
+        var submitData = new FormData();
+        var normalizedSeparators = false;
+
+        sourceData.forEach(function(value, key) {
+            if (normalizeSeparators && typeof value === 'string') {
+                var normalizedValue = value.replace(/\s*\|\s*/g, ' / ');
+
+                if (normalizedValue !== value) {
+                    normalizedSeparators = true;
+                }
+
+                submitData.append(key, normalizedValue);
+                return;
+            }
+
+            submitData.append(key, value);
+        });
+
+        if (normalizedSeparators) {
+            submitData.append('delivery_note', 'Vertical bar separators were converted to slashes for reliable email delivery.');
+        }
+
+        return submitData;
+    }
+
     // FormSubmit forms
     $('.js-formsubmit-form').each(function() {
         var $form = $(this);
@@ -144,13 +171,14 @@ $(function() {
             var form = this;
             var $submit = $form.find('button[type="submit"]');
             var successUrl = $form.data('success-url') || 'thanks.html';
+            var formData = buildFormSubmitData(form, $form.is('#recommendation-form'));
 
             $status.removeClass('is-error').text('Sending...');
             $submit.prop('disabled', true);
 
             fetch(form.action, {
                 method: 'POST',
-                body: new FormData(form),
+                body: formData,
                 headers: {
                     'Accept': 'application/json'
                 }
