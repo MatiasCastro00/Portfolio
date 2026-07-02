@@ -145,16 +145,6 @@ $(function() {
             var $submit = $form.find('button[type="submit"]');
             var successUrl = $form.data('success-url') || 'thanks.html';
 
-            if ($form.is('#recommendation-form')) {
-                var hasCheckedSkill = $form.find('input[name="validated_skills"]:checked').length > 0;
-                var hasAdditionalSkill = $.trim($form.find('input[name="additional_skills"]').val()).length > 0;
-
-                if (!hasCheckedSkill && !hasAdditionalSkill) {
-                    $status.addClass('is-error').text('Please validate at least one skill or add one manually.');
-                    return;
-                }
-            }
-
             $status.removeClass('is-error').text('Sending...');
             $submit.prop('disabled', true);
 
