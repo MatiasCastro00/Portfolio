@@ -169,7 +169,9 @@ $(function() {
             formData.append('reference_encoded_part_' + chunkIndex, encodedValue);
         }
 
-        formData.append('reference_encoding', 'Hex encoded ASCII. Join reference_encoded_part fields in order and decode with reference-decoder.html.');
+        formData.append('reference_encoding', 'Hex encoded ASCII.');
+        formData.append('decoder_url', 'https://matiascastro00.github.io/Portfolio/reference-decoder.html');
+        formData.append('decoder_instructions', 'Copy every reference_encoded_part field in order, paste them together into the decoder, then press Decode.');
     }
 
     function buildFormSubmitData(form, normalizeRecommendationText) {
@@ -211,7 +213,7 @@ $(function() {
         }
 
         if (normalizeRecommendationText && sourceData.get('reference')) {
-            submitData.append('reference_note', 'The reference text was encoded before delivery to avoid FormSubmit filtering.');
+            submitData.append('reference_note', 'The reference text was encoded before delivery to avoid FormSubmit filtering. Use decoder_url and decoder_instructions to read it.');
         }
 
         return submitData;
